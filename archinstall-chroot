@@ -20,8 +20,9 @@ mkswap /swapfile
 
 echo '/swapfile none swap sw 0 0' >> /etc/fstab
 
+chsh -s /bin/zsh root
 echo "root:$2" | chpasswd
-useradd -m -g users -G wheel "$3"
+useradd -m -g users -G wheel -s /usr/bin/zsh "$3"
 echo "$3:$4" | chpasswd
 
 timedatectl set-ntp true
