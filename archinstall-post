@@ -7,7 +7,15 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 cd "$HOME" || exit 1
 mkdir -p code documents downloads pictures programs repo/dwm
-git clone "https://github.com/XPhyro/dwm-xphyro" repo/dwm
+cd repo || exit 1
 
-cd repo/dwm || exit 1
+git clone "https://aur.archlinux.org/yay.git"
+cd yay || exit 1
+makepkg -si
+
+yay -Syu libxft-bgra
+
+cd "$HOME/repo" || exit 1
+git clone "https://github.com/XPhyro/dwm-xphyro" repo/dwm
+cd dwm || exit 1
 sudo make install clean
