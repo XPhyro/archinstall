@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+# before executing, you must have mounted the formatted drives to /mnt
+# this includes the /boot/EFI, /home and others along /
+
+pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant dialog git
+
+arch-chroot /mnt ~/archinstall-chroot
