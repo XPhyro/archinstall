@@ -34,7 +34,7 @@ mount "/dev/$3" /mnt/home
 
 pacman -Sy --noconfirm archlinux-keyring
 
-pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant netctl dhcpcd dialog git xorg xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl zsh
+pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant netctl dhcpcd dialog git xorg xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl zsh pacman-contrib reflector
 
 genfstab -U /mnt >> /mnt/etc/fstab
 

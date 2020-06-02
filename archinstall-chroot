@@ -27,14 +27,11 @@ echo "$3:$4" | chpasswd
 timedatectl set-ntp true
 hwclock --systohc
 
-files="$( find root )"
+sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
 
-for i in $files
-do
-    [ "$( stat -c "%U" "$i" )" = "root" ] || chown "$3" "$i"
-done
+cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+reflector --verbose --latest 1000 --protocol https --protocol http --sort rate --save /etc/pacman.d/mirrorlist
 
-cp -r /root/* /
 rm -r /root /archinstall-chroot
 
 systemctl enable sshd
