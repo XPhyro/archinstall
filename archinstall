@@ -20,6 +20,8 @@ then
         cd /etc/netctl
         netctl start wirelessconf || willexit=1
         cd "$olddir"
+
+        [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ] || { echo "Could not connect to the internet."; willexit=1; }
     else
         echo "You are not connected to the internet."
         willexit=1
@@ -44,6 +46,8 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 cp -r archinstall-chroot root /mnt
 arch-chroot /mnt /archinstall-chroot "$1" "$4" "$5" "$6" | tee archinstall-chroot.log
+
+exit
 
 umount -a
 reboot
