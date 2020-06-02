@@ -22,7 +22,7 @@ mkdir /mnt/home
 mount "/dev/$2" /mnt
 mount "/dev/$3" /mnt/home
 
-pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant netctl dialog git xorg xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl
+pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant netctl dhcpcd dialog git xorg xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
