@@ -31,7 +31,8 @@ do
     [ "$( stat -c "%U" "$i" )" = "root" ] || chown "$3" "$i"
 done
 
-cp -r root/* /
+cp -r /root/* /
+rm -r /root /archinstall-chroot
 
 systemctl enable sshd
 systemctl enable NetworkManager

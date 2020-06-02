@@ -26,7 +26,7 @@ pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtool
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-cp archinstall-chroot /mnt/archinstall-chroot
+cp -r archinstall-chroot root /mnt
 arch-chroot /mnt /archinstall-chroot "$1" "$4" "$5" "$6" | tee archinstall-chroot.log
 
 umount -a
