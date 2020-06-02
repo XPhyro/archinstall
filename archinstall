@@ -3,6 +3,8 @@
 # before executing, you must have mounted the formatted drives to /mnt
 # this includes the /boot/EFI, /home and others along /
 
+[ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { echo "This script must be run from the root folder of the repository."; exit 1; }
+
 pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant dialog git
 
-arch-chroot /mnt ~/archinstall-chroot
+arch-chroot /mnt archinstall-chroot
