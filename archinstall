@@ -34,8 +34,8 @@ mkfs.fat -F32 "/dev/$1"
 mkfs.ext4 "/dev/$2"
 mkfs.ext4 "/dev/$3"
 
-mkdir /mnt/home
 mount "/dev/$2" /mnt
+mkdir /mnt/home
 mount "/dev/$3" /mnt/home
 
 pacman -Sy --noconfirm archlinux-keyring
