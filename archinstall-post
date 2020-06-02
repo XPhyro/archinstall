@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+[ "$EUID" = 0 ] && { echo "This script must not be run as root."; exit 1; }
+
+sudo os-prober
+grub-mkconfig -o /boot/grub/grub.cfg
+
+cd "$HOME" 
+mkdir -p code documents downloads pictures programs repo/dwm
+git clone "https://github.com/XPhyro/dwm-xphyro" repo/dwm
+
+cd repo/dwm
+sudo make install clean

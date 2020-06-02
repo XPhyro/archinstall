@@ -1,10 +1,26 @@
 #!/usr/bin/env sh
 
-# before executing, you must have mounted the formatted drives to /mnt
-# this includes the /boot/EFI, /home and others along /
+# Before executing, you must have mounted the formatted drives to /mnt.
+# This includes the /boot/EFI, /home and others along /.
+# You must also be connected to the internet.
 
 [ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { echo "This script must be run from the root folder of the repository."; exit 1; }
+[ "$6" = "" ] && { echo "You must call this script with 6 arguments: efi_partition, root_partition, home_partition, root_passwd, user, user_password"; exit 1; }
 
-pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant dialog git
+mkfs.fat -F32 "/dev/$1"
+mkfs.ext4 "/dev/$2"
+mkfs.ext4 "/dev/$3"
 
-arch-chroot /mnt archinstall-chroot
+mkdir /mnt/home
+mount "/dev/$2" /mnt
+mount "/dev/$3" /mnt/home
+
+pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant dialog git xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+cp archinstall-chroot /mnt/archinstall-chroot
+arch-chroot /mnt /archinstall-chroot "$1" "$4" "$5" "$6" | tee archinstall-chroot.log
+
+umount -a
+reboot
