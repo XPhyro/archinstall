@@ -4,13 +4,23 @@
 # This includes the /boot/EFI, /home and others along /.
 # You must also be connected to the internet.
 #
-# Example execution: ./archinstall nvme0n1p3 nvme0n1p5 sda6 '!WSVf6wS5Sj!_mq' 'xphyro' 'gWEGg124!!ggpqA'
+# Example execution: ./archinstall 'nvme0n1p3' 'nvme0n1p5' 'sda6' '!WSVf6wS5Sj!_mq' 'xphyro' 'gWEGg124!!ggpqA' 'wpa' 'xphyro-2.4' '1k51345!25sddsgg5!' 'y'
 
 willexit=0
 
 [ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { echo "This script must be run from the root folder of the repository."; willexit=1; }
-[ "$6" = "" ] && { echo "You must call this script with 6 arguments: efi_partition, root_partition, home_partition, root_passwd, user, user_password"; willexit=1; }
-[ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ] || { echo "You are not connected to the internet."; willexit=1; }
+[ "$6" = "" ] && { echo "You must call this script with at least 6 arguments: efi_partition, root_partition, home_partition, root_passwd, user, user_password."; printf "All arguments:\nefi_partition, root_partition, home_partition, root_passwd, user, user_password, wireless_security, wirelss_ssid, wireless_password, wireless_hidden"; willexit=1; }
+if ! [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ]
+then
+    if [ "$7" ] && [ "$8" ] && [ "$9" ] && [ "${10}" ] 
+    then
+        printf "Description='A simple %s encrypted wireless connection'\nInterface=wlan0\nConnection=wireless\nSecurity=%s\nIP=dhcp\nESSID='%s'\nKey='%s'\n" "$7" "$7" "$8" "$9" >> /etc/netct/wirelessconf
+        [ "${10}" = "y" ] && echo "Hidden=yes" >> /etc/netctl/wirelessconf
+    else
+        echo "You are not connected to the internet."
+        willexit=1
+    fi
+fi
 
 [ "$willexit" = "0" ] || exit "$willexit"
 
@@ -22,7 +32,9 @@ mkdir /mnt/home
 mount "/dev/$2" /mnt
 mount "/dev/$3" /mnt/home
 
-pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant netctl dhcpcd dialog git xorg xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl
+pacman -Sy --noconfirm archlinux-keyring
+
+pacstrap /mnt base base-devel grub efibootmgr dosfstools openssh os-prober mtools linux linux-firmware linux-headers linux-lts linux-lts-headers vim network-manager-applet networkmanager wireless_tools wpa_supplicant netctl dhcpcd dialog git xorg xorg-server xf86-video-intel libgl mesa nvidia nvidia-lts nvidia-libgl zsh
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
