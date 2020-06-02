@@ -8,7 +8,7 @@ willexit=0
 
 [ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { echo "This script must be run from the root folder of the repository."; willexit=1; }
 [ "$6" = "" ] && { echo "You must call this script with 6 arguments: efi_partition, root_partition, home_partition, root_passwd, user, user_password"; willexit=1; }
-[ curl -Is https://google.com | head -n 1 | awk '{print $2}' = "200" ] || { echo "You are not connected to the internet."; willexit=1; }
+[ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ] || { echo "You are not connected to the internet."; willexit=1; }
 
 [ "$willexit" = "0" ] || exit "$willexit"
 
