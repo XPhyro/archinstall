@@ -17,11 +17,17 @@ then
         printf "Description='A simple %s encrypted wireless connection'\nInterface=wlan0\nConnection=wireless\nSecurity=%s\nIP=dhcp\nESSID='%s'\nKey='%s'\n" "$7" "$7" "$8" "$9" > /etc/netctl/wirelessconf
         [ "${10}" = "y" ] && echo "Hidden=yes" >> /etc/netctl/wirelessconf
         olddir="$( pwd )"
-        cd /etc/netctl
+        cd /etc/netctl || exit 1
         netctl start wirelessconf || willexit=1
-        cd "$olddir"
+        cd "$olddir" || exit 1
 
-        [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ] || { echo "Could not connect to the internet."; willexit=1; }
+        if [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ] 
+        then
+            wireless=1
+        else
+            echo "Could not connect to the internet."
+            willexit=1
+        fi
     else
         echo "You are not connected to the internet."
         willexit=1
@@ -44,10 +50,9 @@ pacstrap /mnt base base-devel dhcpcd dialog dosfstools efibootmgr git grub libgl
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
+[ "$wireless" = "1" ] && cp /etc/netctl/wirelessconf /mnt/etc/netctl/wirelessconf
 cp -r archinstall-chroot root /mnt
 arch-chroot /mnt /archinstall-chroot "$1" "$4" "$5" "$6" | tee archinstall-chroot.log
-
-exit
 
 umount -a
 reboot

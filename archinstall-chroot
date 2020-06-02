@@ -33,7 +33,7 @@ sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector --verbose --latest 1000 --protocol https --protocol http --protocol ftp --sort rate --save /etc/pacman.d/mirrorlist
 
-rm -r /root /archinstall-chroot
+rm -r /archinstall-chroot
 
 systemctl enable sshd
 systemctl enable NetworkManager
