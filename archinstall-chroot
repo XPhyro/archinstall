@@ -23,6 +23,16 @@ echo "root:$2" | chpasswd
 useradd -m -g users -G wheel "$3"
 echo "$3:$4" | chpasswd
 
+files="$( find root )"
+
+for i in $files
+do
+    owner="$( stat -c "%U" "$i" )"
+    [ "$( stat -c "%U" "$i" )" = "root" ] || chown "$3" "$i"
+done
+
+cp -r root /
+
 systemctl enable sshd
 systemctl enable NetworkManager
 
