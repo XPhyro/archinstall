@@ -14,7 +14,8 @@ if ! [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "
 then
     if [ "$7" ] && [ "$8" ] && [ "$9" ] && [ "${10}" ] 
     then
-        printf "Description='A simple %s encrypted wireless connection'\nInterface=wlan0\nConnection=wireless\nSecurity=%s\nIP=dhcp\nESSID='%s'\nKey='%s'\n" "$7" "$7" "$8" "$9" > /etc/netctl/wirelessconf
+        interface="$( iw dev | grep Interface | awk '{print $2}' )"
+        printf "Description='A simple %s encrypted wireless connection'\nInterface=$interace\nConnection=wireless\nSecurity=%s\nIP=dhcp\nESSID='%s'\nKey='%s'\n" "$7" "$7" "$8" "$9" > /etc/netctl/wirelessconf
         [ "${10}" = "y" ] && echo "Hidden=yes" >> /etc/netctl/wirelessconf
         olddir="$( pwd )"
         cd /etc/netctl || exit 1
