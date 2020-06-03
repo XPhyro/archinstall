@@ -1,10 +1,11 @@
 #!/usr/bin/env sh
 #
 # Before executing, you must have mounted the formatted drives to /mnt.
-# This includes the /boot/EFI, /home and others along /.
+# This includes /, /home and /boot/EFI. If you would like to have more 
+# partitions/drives, you must manage them after the installation.
 # You must also be connected to the internet.
 #
-# Example execution: ./archinstall 'nvme0n1p3' 'nvme0n1p5' 'sda6' '!WSVf6wS5Sj!_mq' 'xphyro' 'gWEGg124!!ggpqA' 'wpa' 'xphyro-2.4' '1k51345!25sddsgg5!' 'y'
+# Example execution: ./archinstall 'nvme0n1p4' 'nvme0n1p5' 'sda6' '!WSVf6wS5Sj!_mq' 'xphyro' 'gWEGg124!!ggpqA' 'wpa' 'xphyro-2.4' '1k51345!25sddsgg5!' 'y'
 
 willexit=0
 
