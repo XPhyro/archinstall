@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+echo "LC_ALL=en_GB.UTF-8" >> /etc/environment
 echo "LANG=en_GB.UTF-8" >> /etc/locale.conf
 sed -i -e 's/#tr_TR.UTF/tr_TR.UTF/' -e 's/#en_GB.UTF/en_GB.UTF/' /etc/locale.gen
 locale-gen
