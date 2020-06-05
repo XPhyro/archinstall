@@ -20,6 +20,7 @@ makepkg -si || {
 }
 
 yay -Syyyu --no-confirm
+yay -S --no-confirm - < "$HOME/archinstall-post/pac/pac.arch"
 
 while read -r i
 do
@@ -40,9 +41,6 @@ do
             git clone "$name" "$path"
             cd "$path" || continue
             $cmd
-            break;;
-        p)
-            pacman -S --no-confirm "$name"
             break;;
         y)
             yay -S --no-confirm "$name"
