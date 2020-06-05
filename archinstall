@@ -9,8 +9,16 @@
 
 willexit=0
 
-[ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { echo "This script must be run from the root folder of the repository."; willexit=1; }
-[ "$6" = "" ] && { echo "You must call this script with at least 6 arguments: efi_partition, root_partition, home_partition, root_passwd, user, user_password."; printf "All arguments:\nefi_partition, root_partition, home_partition, root_passwd, user, user_password, wireless_security, wirelss_ssid, wireless_password, wireless_hidden\n"; willexit=1; }
+[ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { 
+    echo "This script must be run from the root folder of the repository."
+    willexit=1
+}
+
+[ "$6" = "" ] && { 
+    echo "You must call this script with at least 6 arguments: efi_partition, root_partition, home_partition, root_passwd, user, user_password."; printf "All arguments:\nefi_partition, root_partition, home_partition, root_passwd, user, user_passwd, wireless_security, wirelss_ssid, wireless_password, wireless_hidden\n"
+    willexit=1
+}
+
 if ! [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ]
 then
     if [ "$7" ] && [ "$8" ] && [ "$9" ] && [ "${10}" ] 
@@ -53,7 +61,9 @@ pacstrap /mnt base base-devel dhcpcd dialog dosfstools efibootmgr git grub libgl
 genfstab -U /mnt >> /mnt/etc/fstab
 
 [ "$wireless" = "1" ] && cp /etc/netctl/wirelessconf /mnt/etc/netctl/wirelessconf
-cp -r archinstall-chroot root /mnt
+mkdir /mnt/archinstall
+cp -r archinstall-chroot archinstall-post /mnt/archinstall
+# 1=efi_partition, 4=root_passwd, 5=user, 6=user_passwd
 arch-chroot /mnt /archinstall-chroot "$1" "$4" "$5" "$6" | tee archinstall-chroot.log
 
 umount -a

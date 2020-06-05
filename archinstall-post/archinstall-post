@@ -1,0 +1,56 @@
+#!/usr/bin/env sh
+
+[ "$( id -u )" = 0 ] && { 
+    echo "This script must not be run as root."
+    exit 1
+}
+
+sudo os-prober
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+cd "$HOME" || exit 1
+mkdir -p code documents downloads pictures programs repo
+
+cd "$HOME/repo" || exit 1
+git clone "https://aur.archlinux.org/yay.git" yay 
+cd yay || exit 1
+makepkg -si || { 
+    echo "Could not build yay."
+    exit 1
+}
+
+yay -Syyyu --no-confirm
+
+while read -r i
+do
+    mtd="$( echo "$i" | awk -F',' '{print $1}' )"
+    name="$( echo "$i" | awk -F',' '{print $2}' )"
+    path="$( echo "$i" | awk -F',' '{print $3}' )"
+    cmd="$( echo "$i" | awk -F',' '{print $4}' )"
+
+    printf "Method: %s\nName: %s\nPath: %s\nCommand: %s\n" "$mtd" "$name" "$path" "$cmd"
+
+    case "$mtd" in
+        g)
+            cd "$HOME/repo" || continue
+            [ -d "$path" ] && {
+                echo "The repository $name already exists under $path"
+                continue
+            }
+            git clone "$name" "$path"
+            cd "$path" || continue
+            $cmd
+            break;;
+        p)
+            pacman -S --no-confirm "$name"
+            break;;
+        y)
+            yay -S --no-confirm "$name"
+            break;;
+        *)
+            echo "Could not recognise: $i"
+            break;;
+    esac
+done < "$HOME/archinstall-post/pac.list"
+
+rm -r ~/archinstall-post

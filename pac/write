@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-[ "$EUID" = 0 ] || { echo "This script must be run as root."; exit 1; }
-
-pacman -Q > q
-comm -23 <(pacman -Qqe | sort) <(pacman -Qqg base -g base-devel | sort | uniq) > qqe
-comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base -g base-devel | sort | uniq) > qqett

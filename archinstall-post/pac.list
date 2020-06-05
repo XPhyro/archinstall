@@ -1,0 +1,2 @@
+y,libxft-bgra
+g,https://github.com/XPhyro/dwm-xphyro,sudo make install clean

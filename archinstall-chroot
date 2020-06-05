@@ -33,7 +33,9 @@ sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector --verbose --latest 1000 --protocol https --protocol http --protocol ftp --sort rate --save /etc/pacman.d/mirrorlist
 
-rm -r /archinstall-chroot
+cp -r /archinstall/archinstall-post "/home/$3"
+chown -R "$3:users" "/home/$3/archinstall-post"
+rm -r /archinstall
 
 systemctl enable sshd
 systemctl enable NetworkManager
