@@ -1,5 +1,36 @@
 #!/usr/bin/env sh
 
+apfail() {
+    fail="$fail\n$2$1$NC"
+}
+
+apsucc() {
+    succ="$succ\n$2$1$NC"
+}
+
+log() {
+    echo "$1" >> "$logf"
+    echo "$1"
+}
+
+logfail() {
+    log "$1"
+    apfail "$2" "$3"
+}
+
+logsucc() {
+    log "$1"
+    apsucc "$1" "$GREEN"
+}
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+logf="archinstall-post.log"
+
 [ "$( id -u )" = 0 ] && { 
     echo "This script must not be run as root."
     exit 1
@@ -22,6 +53,9 @@ makepkg -si || {
 yay -Syyyu --no-confirm
 yay -S --no-confirm - < "$HOME/archinstall-post/pac/pac.arch"
 
+fail=""
+succ=""
+
 while read -r i
 do
     mtd="$( echo "$i" | awk -F',' '{print $1}' )"
@@ -35,18 +69,34 @@ do
         g)
             cd "$HOME/repo" || continue
             [ -d "$path" ] && {
-                echo "The repository $name already exists under $path"
+                msg="The repository [$name] already exists under [$path]"
+                logfail "$msg" "$i" "$CYAN"
                 continue
             }
-            git clone "$name" "$path"
+            git clone "$name" "$path" || {
+                msg="Could not clone the repository"
+                logfail "$msg" "$i" "$RED"
+                log "$msg"
+                apfail "$i" "$RED"
+                continue
+            }
             cd "$path" || continue
-            $cmd
+            $cmd || {
+                msg="Command [$cmd] fail"
+                logfail "$msg" "$i" "$RED"
+            }
+            logsucc "$i"
             break;;
         y)
-            yay -S --no-confirm "$name"
+            yay -S --no-confirm "$name" || {
+                msg="yay failed for [$name]"
+                logfail "$msg" "$i" "$RED"
+            }
+            logsucc "$i"
             break;;
         *)
-            echo "Could not recognise: $i"
+            msg="Could not recognise: [$i]"
+            logfail "$msg" "$i" "$PURPLE"
             break;;
     esac
 done < "$HOME/archinstall-post/pac/pac.user"
