@@ -49,6 +49,6 @@ do
             echo "Could not recognise: $i"
             break;;
     esac
-done < "$HOME/archinstall-post/pac.list"
+done < "$HOME/archinstall-post/pac/pac.user"
 
 rm -r ~/archinstall-post
