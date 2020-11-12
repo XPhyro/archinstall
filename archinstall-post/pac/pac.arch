@@ -1,6 +1,7 @@
 abook
 alsa-oss
 alsa-utils
+appstream-glib
 arch-audit
 arch-install-scripts
 arduino
@@ -15,6 +16,7 @@ audacity
 autoconf
 automake
 base
+bash-completion
 biber
 binutils
 bison
@@ -27,8 +29,9 @@ breeze-gtk
 brightnessctl
 broot
 calcurse
+calibre
+check
 cheese
-chromium
 clang
 clementine
 clipnotify
@@ -46,6 +49,7 @@ dialog
 diff-so-fancy
 discord
 discover
+djview
 dkms
 docker
 dosbox
@@ -56,6 +60,7 @@ efibootmgr
 exfat-utils
 fakeroot
 fbida
+fd
 feh
 ffmpegthumbnailer
 figlet
@@ -67,14 +72,18 @@ fzf
 gcc
 gdb
 gedit
+gifsicle
 gimp
 git
 git-lfs
+github-cli
+gitlab
 glances
 gource
 groff
 grub
 grub-customizer
+gtk2-perl
 hexchat
 highlight
 hsetroot
@@ -101,6 +110,7 @@ khotkeys
 kinfocenter
 kitty
 kmenuedit
+kmines
 kmix
 knetattach
 kolourpaint
@@ -139,6 +149,7 @@ m4
 make
 man-db
 mediainfo
+meld
 mesa
 mesa-demos
 milou
@@ -177,6 +188,7 @@ os-prober
 oxygen
 p7zip
 pacman-contrib
+pandoc
 patch
 pavucontrol
 pdftk
@@ -198,6 +210,7 @@ playonlinux
 polkit-kde-agent
 powerdevil
 powertop
+progress
 pulseaudio-alsa
 pulseaudio-bluetooth
 pulseeffects
@@ -205,8 +218,10 @@ pypy3
 python
 python-pip
 python-pywal
+python-sphinx
 qiv
 quazip
+r
 ranger
 rclone
 redshift
