@@ -32,6 +32,7 @@ calcurse
 calibre
 check
 cheese
+chromium
 clang
 clementine
 clipnotify
@@ -42,6 +43,7 @@ colordiff
 conky
 cronie
 cudnn
+dash
 ddrescue
 deluge
 dhcpcd
@@ -167,7 +169,6 @@ network-manager-applet
 networkmanager
 nfs-utils
 nmap
-nnn
 nomacs
 notification-daemon
 notmuch
