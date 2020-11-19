@@ -237,6 +237,7 @@ shellcheck
 smbclient
 speedtest-cli
 sshfs
+stalonetray
 steam
 sudo
 sxhkd
@@ -266,6 +267,7 @@ tmux
 todoman
 torbrowser-launcher
 translate-shell
+trayer
 ttf-baekmuk
 ttf-caladea
 ttf-carlito
