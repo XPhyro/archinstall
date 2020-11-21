@@ -59,6 +59,7 @@ dosfstools
 dotnet-runtime
 dotnet-sdk
 efibootmgr
+entr
 exfat-utils
 fakeroot
 fbida
