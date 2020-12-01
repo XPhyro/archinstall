@@ -32,7 +32,7 @@ hwclock --systohc
 sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
 
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-reflector --verbose --latest 1000 --protocol https --protocol http --protocol ftp --sort rate --save /etc/pacman.d/mirrorlist
+reflector --verbose --latest 1000 --protocol https --protocol http --protocol ftp --protocol rsync --sort rate --save /etc/pacman.d/mirrorlist
 
 cp -r /archinstall/archinstall-post "/home/$3"
 chown -R "$3:users" "/home/$3/archinstall-post"
