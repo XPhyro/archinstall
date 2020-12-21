@@ -42,7 +42,6 @@ code
 colordiff
 conky
 cpulimit
-cronie
 cudnn
 dash
 ddrescue
@@ -64,6 +63,7 @@ entr
 exfat-utils
 fakeroot
 fbida
+fcron
 fd
 feh
 ffmpegthumbnailer
@@ -79,6 +79,7 @@ gdb
 gedit
 gifsicle
 gimp
+girara
 git
 git-filter-repo
 git-lfs
@@ -103,6 +104,7 @@ intel-ucode
 iotop
 iwd
 jnettop
+jp2a
 jpegoptim
 jq
 kactivitymanagerd
@@ -163,6 +165,7 @@ milou
 mlocate
 mono
 moreutils
+mplayer
 mtools
 musescore
 nano
@@ -191,6 +194,7 @@ octave
 odt2txt
 okular
 opencolorio
+opendesktop-fonts
 openscad
 openssh
 openvpn
@@ -201,6 +205,7 @@ oxygen
 p7zip
 pacman-contrib
 pandoc
+parallel
 patch
 pavucontrol
 pdftk
@@ -264,6 +269,7 @@ texlive-fontsextra
 texlive-formatsextra
 texlive-games
 texlive-humanities
+texlive-langchinese
 texlive-latexextra
 texlive-music
 texlive-pictures
@@ -282,6 +288,8 @@ torbrowser-launcher
 translate-shell
 transmission-cli
 trayer
+ttf-arphic-ukai
+ttf-arphic-uming
 ttf-baekmuk
 ttf-caladea
 ttf-carlito
@@ -298,6 +306,7 @@ ttf-ubuntu-font-family
 unicode-character-database
 unzip
 usbutils
+usleep
 vi
 vifm
 vimb
@@ -368,6 +377,6 @@ xwallpaper
 youtube-dl
 zathura
 zathura-djvu
-zathura-pdf-mupdf
+zathura-pdf-poppler
 zathura-ps
 zsh
