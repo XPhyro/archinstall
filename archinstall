@@ -9,7 +9,7 @@
 
 willexit=0
 
-[ "$( echo "$PWD" | sed 's/.*\///' )" = "archinstall" ] || { 
+[ "$(echo "$PWD" | sed 's/.*\///')" = "archinstall" ] || { 
     echo "This script must be run from the root directory of the repository."
     willexit=1
 }
@@ -19,19 +19,19 @@ willexit=0
     willexit=1
 }
 
-if ! [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ]
+if ! [ "$(curl -Is https://www.google.com | head -n 1 | awk '{print $2}')" = "200" ]
 then
     if [ "$7" ] && [ "$8" ] && [ "$9" ] && [ "${10}" ] 
     then
-        interface="$( iw dev | grep Interface | awk '{print $2}' )"
+        interface="$(iw dev | grep Interface | awk '{print $2}')"
         printf "Description='A simple %s encrypted wireless connection'\nInterface=$interface\nConnection=wireless\nSecurity=%s\nIP=dhcp\nESSID='%s'\nKey='%s'\n" "$7" "$7" "$8" "$9" > /etc/netctl/wirelessconf
         [ "${10}" = "y" ] && echo "Hidden=yes" >> /etc/netctl/wirelessconf
-        olddir="$( pwd )"
+        olddir="$(pwd)"
         cd /etc/netctl || exit 1
         netctl start wirelessconf || willexit=1
         cd "$olddir" || exit 1
 
-        if [ "$( curl -Is https://www.google.com | head -n 1 | awk '{print $2}' )" = "200" ] 
+        if [ "$(curl -Is https://www.google.com | head -n 1 | awk '{print $2}')" = "200" ] 
         then
             wireless=1
         else
@@ -56,7 +56,7 @@ mount "/dev/$3" /mnt/home
 
 pacman -Sy --noconfirm archlinux-keyring
 
-pacstrap /mnt base base-devel dhcpcd dialog dosfstools efibootmgr git grub libgl linux linux-firmware linux-headers linux-lts linux-lts-headers mesa mtools netctl network-manager-applet networkmanager nvidia nvidia-libgl nvidia-lts openssh os-prober pacman-contrib reflector util-linux vim wireless_tools wpa_supplicant xf86-video-intel xorg xorg-server zsh
+pacstrap /mnt base base-devel dhcpcd dialog dosfstools efibootmgr git grub libgl linux linux-firmware linux-headers linux-lts linux-lts-headers mesa mtools netctl network-manager-applet networkmanager nvidia nvidia-libgl nvidia-lts openssh os-prober pacman-contrib reflector util-linux vim wireless_tools wpa_supplicant xf86-video-intel xorg xorg-server zsh iwd
 
 genfstab -U /mnt >> /mnt/etc/fstab
 

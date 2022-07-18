@@ -31,7 +31,7 @@ NC='\033[0m'
 
 logf="archinstall-post.log"
 
-[ "$( id -u )" = 0 ] && { 
+[ "$(id -u)" = 0 ] && { 
     echo "This script must not be run as root."
     exit 1
 }
@@ -58,10 +58,10 @@ succ=""
 
 while read -r i
 do
-    mtd="$( echo "$i" | awk -F',' '{print $1}' )"
-    name="$( echo "$i" | awk -F',' '{print $2}' )"
-    path="$( echo "$i" | awk -F',' '{print $3}' )"
-    cmd="$( echo "$i" | awk -F',' '{print $4}' )"
+    mtd="$(echo "$i" | awk -F',' '{print $1}')"
+    name="$(echo "$i" | awk -F',' '{print $2}')"
+    path="$(echo "$i" | awk -F',' '{print $3}')"
+    cmd="$(echo "$i" | awk -F',' '{print $4}')"
 
     printf "Method: %s\nName: %s\nPath: %s\nCommand: %s\n" "$mtd" "$name" "$path" "$cmd"
 
