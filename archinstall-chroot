@@ -26,13 +26,14 @@ echo "root:$2" | chpasswd
 useradd -m -g users -G wheel -s /usr/bin/zsh "$3"
 echo "$3:$4" | chpasswd
 
+timedatectl set-timezone Turkey
 timedatectl set-ntp true
 hwclock --systohc
 
 sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
 
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-reflector --verbose --latest 1000 --protocol https --protocol http --protocol ftp --protocol rsync --sort rate --save /etc/pacman.d/mirrorlist
+reflector --verbose --latest 100 --protocol https --protocol rsync --sort rate --save /etc/pacman.d/mirrorlist
 
 cp -r /archinstall/archinstall-post "/home/$3"
 chown -R "$3:users" "/home/$3/archinstall-post"
