@@ -1,4 +1,0 @@
-y,libxft-bgra
-g,https://github.com/XPhyro/dwm-xphyro,sudo make install clean
-g,https://github.com/XPhyro/dotfiles,./deploydotfiles
-g,https://github.com/XPhyro/dotfiles-sensitive,./deploydotfiles-sensitive
