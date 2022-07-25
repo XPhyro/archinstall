@@ -28,6 +28,7 @@ echo "$3:$4" | chpasswd
 
 timedatectl set-timezone Turkey
 timedatectl set-ntp true
+timedatectl set-local-rtc 0
 hwclock --systohc
 
 sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
