@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-echo "LC_ALL=en_GB.UTF-8" >> /etc/environment
-echo "LANG=en_GB.UTF-8" >> /etc/locale.conf
+printf "%s\n" "LC_ALL=en_GB.UTF-8" >> /etc/environment
+printf "%s\n" "LANG=en_GB.UTF-8" >> /etc/locale.conf
 sed -i -E 's/#(tr_TR|en_GB|en_US).UTF/\1.UTF/' /etc/locale.gen
 locale-gen
 
@@ -19,12 +19,12 @@ fallocate -l "$mem"M /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 
-echo '/swapfile none swap sw 0 0' >> /etc/fstab
+printf "%s\n" '/swapfile none swap sw 0 0' >> /etc/fstab
 
 chsh -s /bin/zsh root
-echo "root:$2" | chpasswd
+printf "%s\n" "root:$2" | chpasswd
 useradd -m -g users -G wheel -s /usr/bin/zsh "$3"
-echo "$3:$4" | chpasswd
+printf "%s\n" "$3:$4" | chpasswd
 
 timedatectl set-timezone Turkey
 timedatectl set-ntp true
