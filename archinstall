@@ -62,9 +62,9 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 [ "$wireless" = "1" ] && cp /etc/netctl/wirelessconf /mnt/etc/netctl/wirelessconf
 mkdir /mnt/archinstall
-cp -r archinstall-chroot archinstall-post /mnt/archinstall
+cp archinstall-chroot /mnt/archinstall
 # 1=efi_partition, 4=root_passwd, 5=user, 6=user_passwd
 arch-chroot /mnt /archinstall/archinstall-chroot "$1" "$4" "$5" "$6" | tee archinstall-chroot.log
 
-umount -a
-reboot
+printf "\n\n%s\n" \
+    "YOU CAN NOW REBOOT IF THERE WERE NO ERRORS."

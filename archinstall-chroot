@@ -13,13 +13,15 @@ mkdir -p /boot/grub/locale
 cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 grub-mkconfig -o /boot/grub/grub.cfg
 
-mem="$(free -m | grep Mem | awk '{print $2}')"
-mem=$((mem + 1))
-fallocate -l "$mem"M /swapfile
+printf "How much swap should be allocated? (empty for equal to RAM; can use K,M,G)\n"
+read -r swap_amount
+[ -z "$swap_amount" ] && swap_amount="$(free -m | grep Mem | awk '{print $2}')M"
+fallocate -l "$swap_amount" /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
 
-printf "%s\n" '/swapfile none swap sw 0 0' >> /etc/fstab
+printf "%s\n" \
+    '/swapfile none swap sw 0 0' >> /etc/fstab
 
 chsh -s /bin/zsh root
 printf "%s\n" "root:$2" | chpasswd
@@ -36,13 +38,6 @@ sed -i 's/# %wheel ALL=(ALL) NO/%wheel ALL=(ALL) NO/' /etc/sudoers
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
 reflector --verbose --latest 100 --protocol https --protocol rsync --sort rate --save /etc/pacman.d/mirrorlist
 
-cp -r /archinstall/archinstall-post "/home/$3"
-chown -R "$3:users" "/home/$3/archinstall-post"
 rm -r /archinstall
-
-systemctl enable sshd
-systemctl enable NetworkManager
-systemctl enable iwd
-systemctl enable dhcpcd
 
 exit 0
