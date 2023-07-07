@@ -1,0 +1,133 @@
+#!/usr/bin/env sh
+
+print_help() {
+    printf "%s" \
+"$exec_name [OPTION...] COMMAND -- COMMAND
+Toggle an application on/off based on hashcodes and states.
+
+Options:
+   -b DEVICE, --boot-dev=DEVICE
+      Device to install bootloader (/boot/EFI) on.
+   -r DEVICE, --root-dev=DEVICE
+      Device to install root (/) on.
+   -h DEVICE, --home-dev=DEVICE
+      Device to install home (/home) on.
+   -r PASSWORD, --root-password=PASSWORD
+      Password for root user.
+   -u USERNAME, --user-login=USERNAME
+      Login for user.
+   -p PASSWORD, --user-password=PASSWORD
+      Password for user.
+   -e ENCRYPTION, --wifi-encryption=ENCRYPTION
+      Encryption type for WiFi.
+   -s SSID, --wifi-ssid=SSID
+      SSID for WiFi.
+   -w PASSWORD, --wifi-password=PASSWORD
+      Password for WiFi.
+   -W, --hidden-wifi
+      Use hidden WiFi.
+   -h, --help
+      Print this help and exit.
+
+Examples:
+   Install Arch Linux using a wired connection.
+      \$ $exec_name \
+            -B sda1 -R sda2 -H sda3 \
+            -r '!WSVf6wS5Sj!_mq' -u xphyro -p 'gWEGg124!!ggpqA'
+   Install Arch Linux using a wireless connection.
+      \$ $exec_name \
+            -B nvme0n1p4 -R nvme0n1p5 -H sda2 \
+            -r '!WSVf6wS5Sj!_mq' -u xphyro -p 'gWEGg124!!ggpqA' \
+            -e wpa -s xphyro-2.4 -w '1k51345!25sddsgg5!' -W
+"
+}
+
+assert_arg() {
+    [ -z "$3" ] && {
+        printf "[ERROR]: Expected %s argument to %s, exiting.\n" "$2" "$1"
+        exit 1
+    }
+}
+
+unset_vars() {
+    unset opt_boot_dev opt_root_dev opt_home_dev
+    unset opt_root_password opt_user_login opt_user_password
+    unset opt_wifi_encryption opt_wifi_ssid opt_wifi_password opt_hidden_wifi
+}
+
+parse_args() {
+    while [ -n "$1" ]; do
+        if [ "${1%"${1#?}"}" = "-" ]; then
+            if [ "${1%"${1#??}"}" != "--" ]; then
+                sopt="${1#?}"
+
+                while [ -n "$sopt" ]; do
+                    opt="${sopt%"${sopt#?}"}"
+
+                    case "$opt" in
+                        B) parseargs --boot-dev;;
+                        R) parseargs --root-dev;;
+                        H) parseargs --home-dev;;
+                        r) parseargs --root-password;;
+                        u) parseargs --user-login;;
+                        p) parseargs --user-password;;
+                        e) parseargs --wifi-encryption;;
+                        s) parseargs --wifi-ssid;;
+                        w) parseargs --wifi-password;;
+                        W) parseargs --hidden-wifi;;
+                        h) parseargs --help;;
+                        *) printusage "-$opt"; exit 0;;
+                    esac
+
+                    sopt="${sopt#?}"
+                done
+            else
+                opt="${1#??}"
+
+                case "$opt" in
+                    boot-dev) shift; assert_arg "--boot-dev" "DEVICE" "$1"; opt_boot_dev="$1";;
+                    boot-dev=*) opt_boot_dev="${opt#*=}"; assert_arg "--boot-dev" "DEVICE" "$opt_boot_dev";;
+                    root-dev) shift; assert_arg "--root-dev" "DEVICE" "$1"; opt_root_dev="$1";;
+                    root-dev=*) opt_root_dev="${opt#*=}"; assert_arg "--root-dev" "DEVICE" "$opt_root_dev";;
+                    home-dev) shift; assert_arg "--home-dev" "DEVICE" "$1"; opt_home_dev="$1";;
+                    home-dev=*) opt_home_dev="${opt#*=}"; assert_arg "--home-dev" "DEVICE" "$opt_home_dev";;
+                    root-password) shift; assert_arg "--root-password" "PASSWORD" "$1"; opt_root_password="$1";;
+                    root-password=*) opt_root_password="${opt#*=}"; assert_arg "--root-password" "PASSWORD" "$opt_root_password";;
+                    user-login) shift; assert_arg "--user-login" "USERNAME" "$1"; opt_user_login="$1";;
+                    user-login=*) opt_user_login="${opt#*=}"; assert_arg "--user-login" "USERNAME" "$opt_user_login";;
+                    user-password) shift; assert_arg "--user-password" "PASSWORD" "$1"; opt_user_password="$1";;
+                    user-password=*) opt_user_password="${opt#*=}"; assert_arg "--user-password" "PASSWORD" "$opt_user_password";;
+                    wifi-encryption) shift; assert_arg "--wifi-encryption" "ENCRYPTION" "$1"; opt_wifi_encryption="$1";;
+                    wifi-encryption=*) opt_wifi_encryption="${opt#*=}"; assert_arg "--wifi-encryption" "ENCRYPTION" "$opt_wifi_encryption";;
+                    wifi-ssid) shift; assert_arg "--wifi-ssid" "SSID" "$1"; opt_wifi_ssid="$1";;
+                    wifi-ssid=*) opt_wifi_ssid="${opt#*=}"; assert_arg "--wifi-ssid" "SSID" "$opt_wifi_ssid";;
+                    wifi-password) shift; assert_arg "--wifi-password" "PASSWORD" "$1"; opt_wifi_password="$1";;
+                    wifi-password=*) opt_wifi_password="${opt#*=}"; assert_arg "--wifi-password" "PASSWORD" "$opt_wifi_password";;
+                    hidden-wifi) opt_hidden_wifi=1;;
+                    help) print_help; exit 0;;
+                    "") shift; break;;
+                    *) printusage "--$opt"; exit 0;;
+                esac
+            fi
+        else
+            printf "[ERROR]: Expected option, got %s, exiting.\n" "$1"
+            has_pos_arg=1
+        fi
+
+        shift
+    done
+
+    for i; do
+        printf "[ERROR]: Expected option, got %s, exiting.\n" "$i"
+        has_pos_arg=1
+    done
+
+    [ "$has_pos_arg" -ne 0 ] && {
+        printf "[ERROR]: Expected option, got positional argument, exiting.\n"
+        exit 1
+    }
+}
+
+exec_name="${0##*/}"
+unset_vars
+parse_args "$@"
